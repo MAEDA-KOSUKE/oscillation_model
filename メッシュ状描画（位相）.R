@@ -1,0 +1,46 @@
+###描画(位相の時間発展)#######################
+
+###グラデーションの設定####
+cols = colorRamp(c("#E83929","#E8DD29","#50E829","#29E8A6","#2986E8","#7029E8","#E829BD","#E83929"))
+###########################
+
+ommit <- 1 #何枚おきに描画するか
+last <- time/ommit
+for(i_2 in 0:last){
+  i <- i_2*ommit+1
+
+#for(i in 1:(time+1)){
+  
+  #保存するフォルダと図の名前を指定
+  file_name <- sprintf("./size%d/Phase/Phase%d.png",size,i-1)
+  png(file_name, width=700, height=700)
+  
+  #描画リセット
+  plot(0, 0, xlim=c(-horizontal , horizontal), ylim=c(-vertical, vertical), type="n", xlab="", ylab="", xaxt="n", yaxt="n")
+  
+  #背景（白）
+  plot(0, 0, xlim=c(-horizontal , horizontal), ylim=c(-vertical, vertical), cex=110, col="white", pch=15, xlab="", ylab="", xaxt="n", yaxt="n")
+  
+  #リンクの描画
+  for(j in 1:all_link){
+    par(new=T)
+    segments(link_position[j,1], link_position[j,2], link_position[j,3], link_position[j,4], xlim=c(-horizontal, horizontal), ylim=c(-vertical, vertical), xaxt="n", yaxt="n", xlab="", ylab="", lwd=1, col="grey40", lty=2)
+  }
+  
+  
+  #ノードの描画
+  for(j in 1:all_node){
+    par(new=T)
+    plot(node_position[j,1], node_position[j,2], xlim=c(-horizontal, horizontal), ylim=c(-vertical, vertical), xlab="", ylab="", cex=20/size+(5/6), lwd=2, pch=16, xaxt="n", yaxt="n"
+         , col=rgb(cols( (phase[i,j]%%(2*pi)) /(2*pi) )/255)
+    )
+  }
+  
+  #テキスト
+  text(x=-horizontal/10,y=-vertical,labels="TIMESTEP  :", cex=1, col="black")
+  text(x=horizontal/10,y=-vertical,labels=i-1, cex=1, col="black")
+  
+  #図の書き込み終了
+  dev.off()
+}
+###描画(位相の時間発展)#######################
